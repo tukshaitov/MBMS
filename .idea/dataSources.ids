@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - mbms@localhost" uuid="35d0b5ce-ac8b-431f-a61f-ba99594bfee2">
+    <database-info product="MySQL" version="5.7.9-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="mbms"/>
+    <table name="role" schema="" catalog="mbms" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="created" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="rdid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="uid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="role_ibfk_1" columns="rdid" ref-table="role_definiton" ref-schema="" ref-catalog="mbms" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="role_ibfk_2" columns="uid" ref-table="user" ref-schema="" ref-catalog="mbms" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="role_definiton" schema="" catalog="mbms" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="25" scale="0" nullable="false" jdbcType="12"/>
+      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="role_ibfk_1" table="role" schema="" catalog="mbms" columns="rdid"/>
+    </table>
+    <table name="session" schema="" catalog="mbms" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="opened" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="closed" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="uid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="session_ibfk_1" columns="uid" ref-table="user" ref-schema="" ref-catalog="mbms" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_id" unique="false" columns="uid"/>
+    </table>
+    <table name="user" schema="" catalog="mbms" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="created" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="expired" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="login" sqlType="VARCHAR" precision="25" scale="0" nullable="false" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="status" sqlType="ENUM" precision="7" scale="0" nullable="false" jdbcType="1"/>
+      <column name="updated" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="version" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="role_ibfk_2" table="role" schema="" catalog="mbms" columns="uid"/>
+      <exported-key name="session_ibfk_1" table="session" schema="" catalog="mbms" columns="uid"/>
+    </table>
+  </data-source>
+</component>

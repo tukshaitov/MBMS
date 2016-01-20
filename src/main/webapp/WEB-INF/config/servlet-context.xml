@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<beans xmlns="http://www.springframework.org/schema/beans"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xmlns:context="http://www.springframework.org/schema/context"
+		   xmlns:p="http://www.springframework.org/schema/p"
+		   xmlns:mvc="http://www.springframework.org/schema/mvc"
+		   xmlns:tx="http://www.springframework.org/schema/tx"
+		   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+		   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.8.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+
+	<mvc:annotation-driven />
+	<mvc:resources location="/resources/" mapping="/resources/**"/>
+	<context:annotation-config />
+	<context:component-scan base-package="com.bankofbaku" />
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+
+	<jpa:repositories base-package="com.bankofbaku.dao" />
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
+
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		  p:basename="classpath:messages">
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+				<property name="paramName" value="lang" />
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+ 
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="en_US" />
+	</bean>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/mbms?useUnicode=true&amp;characterEncoding=UTF-8&amp;characterEncoding=UTF-8" />
+		<property name="username" value="root" />
+		<property name="password" value="12345" />
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="MBMS" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="false" />
+				<property name="showSql" value="false" />
+				<property name="databasePlatform" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	<bean class="org.springframework.orm.hibernate4.HibernateExceptionTranslator" />
+
+</beans>
